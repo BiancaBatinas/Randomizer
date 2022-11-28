@@ -1,11 +1,49 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from "react-native";
+import Header from "./components/Header";
+import React, { useReducer, useState } from "react";
+import StartGameScreen from "./screen/StartGameScreen";
+import GameScreen from "./screen/GameScreen";
+import GameOver from "./screen/GameOver";
 
 export default function App() {
+  const [userNumber, SetUserNumber] = useState();
+  const [rounds, SetRounds] = useState(0);
+  
+
+  const startGame = (selectedNumber) => {
+    SetUserNumber(selectedNumber);
+  };
+
+  const GameOverHandler = (round) => {
+    SetRounds(round);
+  };
+
+  const restartGame = (start) => {
+    SetRounds(0);
+    SetUserNumber(null);
+  };
+
+  //preia numarul ales din start gamews
+  //GameScreen preia nr ales din startgame
+  let content = <StartGameScreen onStartGame={startGame} />;
+  if (userNumber && rounds <= 0) {
+    content = (
+      <GameScreen userChoise={userNumber} onGameOver={GameOverHandler} />
+    );
+  } else if (rounds > 0) {
+    content = (
+      <GameOver
+        number={rounds}
+        userNumbers={userNumber}
+        onRestart={restartGame}
+      />
+    );
+  }
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <Header title="Randomizer" />
+      {content}
     </View>
   );
 }
@@ -13,8 +51,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
+
+
