@@ -42,7 +42,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Header title="Randomizerr" />
+      <Header title="Randomizer" />
       {content}
     </View>
   );
